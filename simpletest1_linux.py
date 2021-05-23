@@ -8,25 +8,30 @@ from fmz import * # 导入所有FMZ函数
 import pandas as pd
 task = VCtx(__doc__) # 初始化
 save_name = 'rowdata_test1.csv'
-
+print(0)
 exchange.GetAccount()
 kline = get_bars('bitfinex.btc_usd', '1m', start='2019-05-01 06:00:00', end='2019-05-01 20:00:00')
-
+print(1)
 start_time = _D()
 Sleep(240*60*1000)
 end_time = _D()
+print(2)
 kline_all = get_bars('bitfinex.btc_usd', '1m', start=start_time, end=end_time)
+print(3)
 kline_all['EMAfast'] = talib.EMA(kline.close,5)
 kline_all['EMAslow'] = talib.EMA(kline.close,12)
+print(4)
 while kline_all.shape[0]<1000:
     start_time = end_time
     Sleep(60*60*1000)
     end_time = _D()
     kline = get_bars('bitfinex.btc_usd', '1m', start=start_time, end=end_time)
     kline_all = pd.concat([kline_all,kline],axis=0)
+    print(5)
 slow_length = 12
 kline_all['EMAfast'] = talib.EMA(kline_all.close,5)
 kline_all['EMAslow'] = talib.EMA(kline_all.close,slow_length)
+print(6)
 kline_all[slow_length-1:].to_csv(save_name) # to_csv 每1000行 占用 98kB
-
+print(7)
 print(end_time)
